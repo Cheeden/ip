@@ -1,8 +1,8 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class YuanTheGoBiker {
-    static Task[] taskList = new Task[100];
-    static int index = 0;
+    static ArrayList<Task> taskList= new ArrayList<>();
 
     public static void line() {
         System.out.println("    ____________________________________________");
@@ -31,46 +31,46 @@ public class YuanTheGoBiker {
 
                 if (input.equals("bye")) {
                     line();
-                    printMessage("Bye. I dont wanna see you again");
+                    printMessage("Bye. I don't wanna see you again");
                     line();
                     break;
                 }
 
                 if (input.equals("list")) {
                     line();
-                    for (int j = 0; j < index; j++) {
-                        printMessage((j + 1) + "." + taskList[j].toString());
+                    for (int j = 0; j < taskList.size(); j++) {
+                        printMessage((j + 1) + "." + taskList.get(j).toString());
                     }
                     line();
                     continue;
                 }
 
                 if (command.equals("mark")) {
-                    int listNumber = Integer.parseInt(instruction);
+                    int markIndex = Integer.parseInt(instruction) - 1;
 
                     //error handling
-                    if (listNumber > index) {
-                        throw new YuanException("Dude, there there isn't this task on the list");
+                    if (markIndex < 0 || markIndex >= taskList.size()) {
+                        throw new YuanException("Dude, there there isn't a task with that number!");
                     }
 
-                    taskList[listNumber - 1].markAsDone();
+                    taskList.get(markIndex).markAsDone();
                     line();
                     printMessage("Okay! I've mark this task as done:");
-                    printMessage(taskList[listNumber - 1].toString());
+                    printMessage(taskList.get(markIndex).toString());
                     line();
                     continue;
                 } else if (command.equals("unmark")) {
-                    int listNumber = Integer.parseInt(instruction);
+                    int unmarkIndex = Integer.parseInt(instruction) - 1;
 
                     //error handling
-                    if (listNumber > index) {
-                        throw new YuanException("Dude, there there isn't this task on the list");
+                    if (unmarkIndex < 0 || unmarkIndex >= taskList.size()) {
+                        throw new YuanException("Dude, there there isn't a task with that number!");
                     }
 
-                    taskList[listNumber - 1].markAsNotDone();
+                    taskList.get(unmarkIndex).markAsNotDone();
                     line();
                     printMessage("Okay! I've mark this task as not done:");
-                    printMessage(taskList[listNumber - 1].toString());
+                    printMessage(taskList.get(unmarkIndex).toString());
                     line();
                     continue;
                 }
@@ -81,30 +81,28 @@ public class YuanTheGoBiker {
                         if (instruction.isEmpty()) {
                             throw new YuanException("Yo, I don't know what you mean, why is it empty??");
                         }
-                        taskList[index] = new Todo(instruction);
+                        taskList.add(new Todo(instruction));
 
                         line();
                         printMessage("Alright, I've added this task:");
-                        printMessage(taskList[index].toString());
-                        printMessage("Now you have " + (index + 1) + " tasks in the list");
+                        printMessage(taskList.get(taskList.size() - 1).toString());
+                        printMessage("Now you have " + taskList.size() + " tasks in the list");
                         line();
 
-                        index++;
                         break;
 
                     case "deadline":
                         String[] rest = instruction.split(" /by ", 2);
                         String deadlineDescription = rest[0];
                         String by = rest[1];
-                        taskList[index] = new Deadline(deadlineDescription, by);
+                        taskList.add(new Deadline(deadlineDescription, by));
 
                         line();
                         printMessage("Alright, I've added this task:");
-                        printMessage(taskList[index].toString());
-                        printMessage("Now you have " + (index + 1) + " tasks in the list");
+                        printMessage(taskList.get(taskList.size() - 1).toString());
+                        printMessage("Now you have " + taskList.size() + " tasks in the list");
                         line();
 
-                        index++;
                         break;
 
                     case "event":
@@ -113,15 +111,37 @@ public class YuanTheGoBiker {
                         String[] toParts = fromParts[1].split(" /to ", 2);
                         String from = toParts[0];
                         String to = toParts[1];
-                        taskList[index] = new Event(eventDescription, from, to);
+                        taskList.add(new Event(eventDescription, from, to));
 
                         line();
                         printMessage("Alright, I've added this task:");
-                        printMessage(taskList[index].toString());
-                        printMessage("Now you have " + (index + 1) + " tasks in the list");
+                        printMessage(taskList.get(taskList.size() - 1).toString());
+                        printMessage("Now you have " + taskList.size() + " tasks in the list");
                         line();
 
-                        index++;
+                        break;
+
+                    case "delete":
+                        //error handling
+                        if (instruction.isEmpty()) {
+                            throw new YuanException("Yo, you need to specify the task number to delete!");
+                        }
+
+                        int deleteIndex = Integer.parseInt(instruction) - 1;
+
+                        //error handling
+                        if (deleteIndex < 0 || deleteIndex >= taskList.size()) {
+                            throw new YuanException("Dude, there isn't a task with that number!");
+                        }
+
+                        Task removedTask = taskList.remove(deleteIndex);
+
+                        line();
+                        printMessage("Fine... I've removed this task:");
+                        printMessage(removedTask.toString());
+                        printMessage("Now you have " + taskList.size() + " tasks in the list");
+                        line();
+
                         break;
 
                     default:
