@@ -3,61 +3,110 @@ import java.util.Scanner;
 public class YuanTheGoBiker {
     static Task[] taskList = new Task[100];
     static int index = 0;
-    static String line = "____________________________________________";
+
+    public static void line() {
+        System.out.println("    ____________________________________________");
+    }
+
+    public static void printMessage(String msg) {
+        System.out.println("    " + msg);
+    }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(line);
-        System.out.println("Hello! I'm Yuan");
-        System.out.println("How can I help you?");
-        System.out.println(line);
+        line();
+        printMessage("Hello! I'm Yuan");
+        printMessage("How can I help you?");
+        line();
 
         String input = "";
 
         while (true) {
             input = scanner.nextLine();
-            String[] parts = input.split(" ");
+            String[] parts = input.split(" ", 2);
+            String command = parts[0];
+            String instruction = parts.length > 1 ? parts[1] : "";
 
             if (input.equals("bye")) {
-                System.out.println("    " + line);
-                System.out.println("    " + "Bye. Hope to see you again");
-                System.out.println("    " + line);
+                line();
+                printMessage("Bye. Hope to see you again");
+                line();
                 break;
             }
 
-            if (input.equals("storage")) {
-                System.out.println("    " + line);
+            if (input.equals("list")) {
+                line();
                 for(int j = 0; j < index; j++) {
-                    System.out.println("    " + (j+1) + "." + "[" + taskList[j].getStatusIcon() + "] " + taskList[j].description);
+                    printMessage((j+1) + "." + taskList[j].toString());
                 }
-                System.out.println("    " + line);
+                line();
                 continue;
             }
 
-            if (parts[0].equals("mark")) {
-                int listNumber = Integer.parseInt(parts[1]);
+            if (command.equals("mark")) {
+                int listNumber = Integer.parseInt(instruction);
                 taskList[listNumber - 1].markAsDone();
-                System.out.println("    " + line);
-                System.out.println("    Okay! I've mark this task as done:");
-                System.out.println("    [" + taskList[listNumber - 1].getStatusIcon() + "] " + taskList[listNumber - 1].description);
-                System.out.println("    " + line);
+                line();
+                printMessage("Okay! I've mark this task as done:");
+                printMessage(taskList[listNumber - 1].toString());
+                line();
                 continue;
-            } else if (parts[0].equals("unmark")) {
-                int listNumber = Integer.parseInt(parts[1]);
+            } else if (command.equals("unmark")) {
+                int listNumber = Integer.parseInt(instruction);
                 taskList[listNumber - 1].markAsNotDone();
-                System.out.println("    " + line);
-                System.out.println("Okay! I've mark this task as not done:");
-                System.out.println("[" + taskList[listNumber - 1].getStatusIcon() + "] " + taskList[listNumber - 1].description);
-                System.out.println("    " + line);
+                line();
+                printMessage("Okay! I've mark this task as not done:");
+                printMessage(taskList[listNumber - 1].toString());
+                line();
                 continue;
             }
 
-            System.out.println("    " + line);
-            System.out.println("    " + "added: " + input);
-            System.out.println("    " + line);
-            taskList[index] = new Task(input);
-            index++;
+            switch (command) {
+                case "todo":
+                    taskList[index] = new Todo(instruction);
+
+                    line();
+                    printMessage("Alright, I've added this task:");
+                    printMessage(taskList[index].toString());
+                    printMessage("Now you have " + (index + 1) + " tasks in the list");
+                    line();
+
+                    index++;
+                    break;
+
+                case "deadline":
+                    String[] rest = instruction.split(" /by ", 2);
+                    String deadlineDescription = rest[0];
+                    String by = rest[1];
+                    taskList[index] = new Deadline(deadlineDescription, by);
+
+                    line();
+                    printMessage("Alright, I've added this task:");
+                    printMessage(taskList[index].toString());
+                    printMessage("Now you have " + (index + 1) + " tasks in the list");
+                    line();
+
+                    index++;
+                    break;
+
+                case "event":
+                    String[] fromParts = instruction.split(" /from ", 2);
+                    String eventDescription = fromParts[0];
+                    String[] toParts = fromParts[1].split(" /to ", 2);
+                    String from = toParts[0];
+                    String to = toParts[1];
+                    taskList[index] = new Event(eventDescription, from, to);
+
+                    line();
+                    printMessage("Alright, I've added this task:");
+                    printMessage(taskList[index].toString());
+                    printMessage("Now you have " + (index + 1) + " tasks in the list");
+                    line();
+
+                    index++;
+                    break;
+            }
         }
     }
 }
