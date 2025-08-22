@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class YuanTheGoBiker {
-    static String[] storage = new String[100];
+    static Task[] taskList = new Task[100];
     static int index = 0;
     static String line = "____________________________________________";
 
@@ -15,8 +15,9 @@ public class YuanTheGoBiker {
 
         String input = "";
 
-        while (!input.equals("bye")) {
+        while (true) {
             input = scanner.nextLine();
+            String[] parts = input.split(" ");
 
             if (input.equals("bye")) {
                 System.out.println("    " + line);
@@ -28,8 +29,26 @@ public class YuanTheGoBiker {
             if (input.equals("storage")) {
                 System.out.println("    " + line);
                 for(int j = 0; j < index; j++) {
-                    System.out.println("    " + (j+1) + "." + storage[j]);
+                    System.out.println("    " + (j+1) + "." + "[" + taskList[j].getStatusIcon() + "] " + taskList[j].description);
                 }
+                System.out.println("    " + line);
+                continue;
+            }
+
+            if (parts[0].equals("mark")) {
+                int listNumber = Integer.parseInt(parts[1]);
+                taskList[listNumber - 1].markAsDone();
+                System.out.println("    " + line);
+                System.out.println("    Okay! I've mark this task as done:");
+                System.out.println("    [" + taskList[listNumber - 1].getStatusIcon() + "] " + taskList[listNumber - 1].description);
+                System.out.println("    " + line);
+                continue;
+            } else if (parts[0].equals("unmark")) {
+                int listNumber = Integer.parseInt(parts[1]);
+                taskList[listNumber - 1].markAsNotDone();
+                System.out.println("    " + line);
+                System.out.println("Okay! I've mark this task as not done:");
+                System.out.println("[" + taskList[listNumber - 1].getStatusIcon() + "] " + taskList[listNumber - 1].description);
                 System.out.println("    " + line);
                 continue;
             }
@@ -37,7 +56,7 @@ public class YuanTheGoBiker {
             System.out.println("    " + line);
             System.out.println("    " + "added: " + input);
             System.out.println("    " + line);
-            storage[index] = input;
+            taskList[index] = new Task(input);
             index++;
         }
     }
