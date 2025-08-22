@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
 public class YuanTheGoBiker {
+    static String[] storage = new String[100];
+    static int index = 0;
     static String line = "____________________________________________";
 
     public static void main(String[] args) {
@@ -23,9 +25,20 @@ public class YuanTheGoBiker {
                 break;
             }
 
+            if (input.equals("storage")) {
+                System.out.println("    " + line);
+                for(int j = 0; j < index; j++) {
+                    System.out.println("    " + (j+1) + "." + storage[j]);
+                }
+                System.out.println("    " + line);
+                continue;
+            }
+
             System.out.println("    " + line);
-            System.out.println("    " + input);
+            System.out.println("    " + "added: " + input);
             System.out.println("    " + line);
+            storage[index] = input;
+            index++;
         }
     }
 }
