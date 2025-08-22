@@ -16,96 +16,121 @@ public class YuanTheGoBiker {
         Scanner scanner = new Scanner(System.in);
 
         line();
-        printMessage("Hello! I'm Yuan");
-        printMessage("How can I help you?");
+        printMessage("Hello... I'm Yuan");
+        printMessage("Why are you bothering me");
         line();
 
         String input = "";
 
         while (true) {
-            input = scanner.nextLine();
-            String[] parts = input.split(" ", 2);
-            String command = parts[0];
-            String instruction = parts.length > 1 ? parts[1] : "";
+            try {
+                input = scanner.nextLine();
+                String[] parts = input.split(" ", 2);
+                String command = parts[0];
+                String instruction = parts.length > 1 ? parts[1] : "";
 
-            if (input.equals("bye")) {
-                line();
-                printMessage("Bye. Hope to see you again");
-                line();
-                break;
-            }
-
-            if (input.equals("list")) {
-                line();
-                for(int j = 0; j < index; j++) {
-                    printMessage((j+1) + "." + taskList[j].toString());
+                if (input.equals("bye")) {
+                    line();
+                    printMessage("Bye. I dont wanna see you again");
+                    line();
+                    break;
                 }
+
+                if (input.equals("list")) {
+                    line();
+                    for (int j = 0; j < index; j++) {
+                        printMessage((j + 1) + "." + taskList[j].toString());
+                    }
+                    line();
+                    continue;
+                }
+
+                if (command.equals("mark")) {
+                    int listNumber = Integer.parseInt(instruction);
+
+                    //error handling
+                    if (listNumber > index) {
+                        throw new YuanException("Dude, there there isn't this task on the list");
+                    }
+
+                    taskList[listNumber - 1].markAsDone();
+                    line();
+                    printMessage("Okay! I've mark this task as done:");
+                    printMessage(taskList[listNumber - 1].toString());
+                    line();
+                    continue;
+                } else if (command.equals("unmark")) {
+                    int listNumber = Integer.parseInt(instruction);
+
+                    //error handling
+                    if (listNumber > index) {
+                        throw new YuanException("Dude, there there isn't this task on the list");
+                    }
+
+                    taskList[listNumber - 1].markAsNotDone();
+                    line();
+                    printMessage("Okay! I've mark this task as not done:");
+                    printMessage(taskList[listNumber - 1].toString());
+                    line();
+                    continue;
+                }
+
+                switch (command) {
+                    case "todo":
+                        //error handling
+                        if (instruction.isEmpty()) {
+                            throw new YuanException("Yo, I don't know what you mean, why is it empty??");
+                        }
+                        taskList[index] = new Todo(instruction);
+
+                        line();
+                        printMessage("Alright, I've added this task:");
+                        printMessage(taskList[index].toString());
+                        printMessage("Now you have " + (index + 1) + " tasks in the list");
+                        line();
+
+                        index++;
+                        break;
+
+                    case "deadline":
+                        String[] rest = instruction.split(" /by ", 2);
+                        String deadlineDescription = rest[0];
+                        String by = rest[1];
+                        taskList[index] = new Deadline(deadlineDescription, by);
+
+                        line();
+                        printMessage("Alright, I've added this task:");
+                        printMessage(taskList[index].toString());
+                        printMessage("Now you have " + (index + 1) + " tasks in the list");
+                        line();
+
+                        index++;
+                        break;
+
+                    case "event":
+                        String[] fromParts = instruction.split(" /from ", 2);
+                        String eventDescription = fromParts[0];
+                        String[] toParts = fromParts[1].split(" /to ", 2);
+                        String from = toParts[0];
+                        String to = toParts[1];
+                        taskList[index] = new Event(eventDescription, from, to);
+
+                        line();
+                        printMessage("Alright, I've added this task:");
+                        printMessage(taskList[index].toString());
+                        printMessage("Now you have " + (index + 1) + " tasks in the list");
+                        line();
+
+                        index++;
+                        break;
+
+                    default:
+                        throw new YuanException("Try again man, you are almost there");
+                }
+            } catch (YuanException e) {
                 line();
-                continue;
-            }
-
-            if (command.equals("mark")) {
-                int listNumber = Integer.parseInt(instruction);
-                taskList[listNumber - 1].markAsDone();
+                printMessage(e.getMessage());
                 line();
-                printMessage("Okay! I've mark this task as done:");
-                printMessage(taskList[listNumber - 1].toString());
-                line();
-                continue;
-            } else if (command.equals("unmark")) {
-                int listNumber = Integer.parseInt(instruction);
-                taskList[listNumber - 1].markAsNotDone();
-                line();
-                printMessage("Okay! I've mark this task as not done:");
-                printMessage(taskList[listNumber - 1].toString());
-                line();
-                continue;
-            }
-
-            switch (command) {
-                case "todo":
-                    taskList[index] = new Todo(instruction);
-
-                    line();
-                    printMessage("Alright, I've added this task:");
-                    printMessage(taskList[index].toString());
-                    printMessage("Now you have " + (index + 1) + " tasks in the list");
-                    line();
-
-                    index++;
-                    break;
-
-                case "deadline":
-                    String[] rest = instruction.split(" /by ", 2);
-                    String deadlineDescription = rest[0];
-                    String by = rest[1];
-                    taskList[index] = new Deadline(deadlineDescription, by);
-
-                    line();
-                    printMessage("Alright, I've added this task:");
-                    printMessage(taskList[index].toString());
-                    printMessage("Now you have " + (index + 1) + " tasks in the list");
-                    line();
-
-                    index++;
-                    break;
-
-                case "event":
-                    String[] fromParts = instruction.split(" /from ", 2);
-                    String eventDescription = fromParts[0];
-                    String[] toParts = fromParts[1].split(" /to ", 2);
-                    String from = toParts[0];
-                    String to = toParts[1];
-                    taskList[index] = new Event(eventDescription, from, to);
-
-                    line();
-                    printMessage("Alright, I've added this task:");
-                    printMessage(taskList[index].toString());
-                    printMessage("Now you have " + (index + 1) + " tasks in the list");
-                    line();
-
-                    index++;
-                    break;
             }
         }
     }
