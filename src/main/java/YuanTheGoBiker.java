@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class YuanTheGoBiker {
-    static ArrayList<Task> taskList= new ArrayList<>();
+    static Storage storage = new Storage("./data/yuan.txt");
+    static ArrayList<Task> taskList = storage.load();
 
     public static void line() {
         System.out.println("    ____________________________________________");
@@ -54,6 +55,7 @@ public class YuanTheGoBiker {
                     }
 
                     taskList.get(markIndex).markAsDone();
+                    storage.save(taskList);
                     line();
                     printMessage("Okay! I've mark this task as done:");
                     printMessage(taskList.get(markIndex).toString());
@@ -68,6 +70,7 @@ public class YuanTheGoBiker {
                     }
 
                     taskList.get(unmarkIndex).markAsNotDone();
+                    storage.save(taskList);
                     line();
                     printMessage("Okay! I've mark this task as not done:");
                     printMessage(taskList.get(unmarkIndex).toString());
@@ -81,7 +84,8 @@ public class YuanTheGoBiker {
                         if (instruction.isEmpty()) {
                             throw new YuanException("Yo, I don't know what you mean, why is it empty??");
                         }
-                        taskList.add(new Todo(instruction));
+                        taskList.add(new Todo(instruction, false));
+                        storage.save(taskList);
 
                         line();
                         printMessage("Alright, I've added this task:");
@@ -95,7 +99,8 @@ public class YuanTheGoBiker {
                         String[] rest = instruction.split(" /by ", 2);
                         String deadlineDescription = rest[0];
                         String by = rest[1];
-                        taskList.add(new Deadline(deadlineDescription, by));
+                        taskList.add(new Deadline(deadlineDescription, by, false));
+                        storage.save(taskList);
 
                         line();
                         printMessage("Alright, I've added this task:");
@@ -111,7 +116,8 @@ public class YuanTheGoBiker {
                         String[] toParts = fromParts[1].split(" /to ", 2);
                         String from = toParts[0];
                         String to = toParts[1];
-                        taskList.add(new Event(eventDescription, from, to));
+                        taskList.add(new Event(eventDescription, from, to, false));
+                        storage.save(taskList);
 
                         line();
                         printMessage("Alright, I've added this task:");
@@ -135,6 +141,7 @@ public class YuanTheGoBiker {
                         }
 
                         Task removedTask = taskList.remove(deleteIndex);
+                        storage.save(taskList);
 
                         line();
                         printMessage("Fine... I've removed this task:");
