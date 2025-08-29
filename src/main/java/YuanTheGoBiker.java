@@ -1,7 +1,12 @@
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class YuanTheGoBiker {
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
     static Storage storage = new Storage("./data/yuan.txt");
     static ArrayList<Task> taskList = storage.load();
 
@@ -96,34 +101,42 @@ public class YuanTheGoBiker {
                         break;
 
                     case "deadline":
-                        String[] rest = instruction.split(" /by ", 2);
-                        String deadlineDescription = rest[0];
-                        String by = rest[1];
-                        taskList.add(new Deadline(deadlineDescription, by, false));
-                        storage.save(taskList);
+                        try {
+                            String[] rest = instruction.split(" /by ", 2);
+                            String deadlineDescription = rest[0];
+                            LocalDate by = LocalDate.parse(rest[1], formatter);
+                            taskList.add(new Deadline(deadlineDescription, by, false));
+                            storage.save(taskList);
 
-                        line();
-                        printMessage("Alright, I've added this task:");
-                        printMessage(taskList.get(taskList.size() - 1).toString());
-                        printMessage("Now you have " + taskList.size() + " tasks in the list");
-                        line();
+                            line();
+                            printMessage("Alright, I've added this task:");
+                            printMessage(taskList.get(taskList.size() - 1).toString());
+                            printMessage("Now you have " + taskList.size() + " tasks in the list");
+                            line();
+                        } catch (DateTimeParseException e) {
+                            printMessage("Don't make me say again, pls enter the date in dd/MM/yyyy format");
+                        }
 
                         break;
 
                     case "event":
-                        String[] fromParts = instruction.split(" /from ", 2);
-                        String eventDescription = fromParts[0];
-                        String[] toParts = fromParts[1].split(" /to ", 2);
-                        String from = toParts[0];
-                        String to = toParts[1];
-                        taskList.add(new Event(eventDescription, from, to, false));
-                        storage.save(taskList);
+                        try {
+                            String[] fromParts = instruction.split(" /from ", 2);
+                            String eventDescription = fromParts[0];
+                            String[] toParts = fromParts[1].split(" /to ", 2);
+                            LocalDate from = LocalDate.parse(toParts[0], formatter);
+                            LocalDate to = LocalDate.parse(toParts[1], formatter);
+                            taskList.add(new Event(eventDescription, from, to, false));
+                            storage.save(taskList);
 
-                        line();
-                        printMessage("Alright, I've added this task:");
-                        printMessage(taskList.get(taskList.size() - 1).toString());
-                        printMessage("Now you have " + taskList.size() + " tasks in the list");
-                        line();
+                            line();
+                            printMessage("Alright, I've added this task:");
+                            printMessage(taskList.get(taskList.size() - 1).toString());
+                            printMessage("Now you have " + taskList.size() + " tasks in the list");
+                            line();
+                        } catch (DateTimeParseException e) {
+                            printMessage("Don't make me say again, pls enter the date in dd/MM/yyyy format");
+                        }
 
                         break;
 

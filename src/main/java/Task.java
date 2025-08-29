@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -36,12 +39,12 @@ public abstract class Task {
                 return new Todo(description, isDone);
 
             case "D":
-                String deadline = parts[3];
+                LocalDate deadline = LocalDate.parse(parts[3]);
                 return new Deadline(description, deadline, isDone);
 
             case "E":
-                String from = parts[3];
-                String to = parts[4];
+                LocalDate from = LocalDate.parse(parts[3]);
+                LocalDate to = LocalDate.parse(parts[4]);
                 return new Event(description, from, to, isDone);
 
             default:
