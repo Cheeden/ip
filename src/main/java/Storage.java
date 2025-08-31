@@ -1,5 +1,9 @@
-import java.io.*;
-import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Storage {
     private String filePath;
@@ -8,8 +12,8 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public ArrayList<Task> load() {
-        ArrayList<Task> taskList = new ArrayList<>();
+    public TaskList load() {
+        TaskList taskList = new TaskList();
         File file = new File(filePath);
 
         try {
@@ -22,7 +26,7 @@ public class Storage {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null) {
-                taskList.add(Task.fromStorageFormat(line));
+                taskList.addTask(Task.fromStorageFormat(line));
             }
             br.close();
 
@@ -33,10 +37,10 @@ public class Storage {
         return taskList;
     }
 
-    public void save(ArrayList<Task> taskList) {
+    public void save(TaskList taskList) {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-            for (Task task : taskList) {
+            for (Task task : taskList.getTasks()) {
                 bw.write(task.toStorageFormat());
                 bw.newLine();
             }

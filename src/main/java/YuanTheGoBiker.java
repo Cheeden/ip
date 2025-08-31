@@ -1,12 +1,11 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 
 public class YuanTheGoBiker {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
     private static final Storage storage = new Storage("./data/yuan.txt");
-    private static final ArrayList<Task> taskList = storage.load();
+    private static final TaskList taskList = storage.load();
     private static final UI ui = new UI();
 
     public static void main(String[] args) {
@@ -39,7 +38,7 @@ public class YuanTheGoBiker {
                         throw new YuanException("Dude, there there isn't a task with that number!");
                     }
 
-                    taskList.get(markIndex).markAsDone();
+                    taskList.markTask(markIndex);
                     storage.save(taskList);
                     ui.showMark(taskList.get(markIndex));
                     continue;
@@ -52,7 +51,7 @@ public class YuanTheGoBiker {
                         throw new YuanException("Dude, there there isn't a task with that number!");
                     }
 
-                    taskList.get(unmarkIndex).markAsNotDone();
+                    taskList.unmarkTask(unmarkIndex);
                     storage.save(taskList);
                     ui.showUnmark(taskList.get(unmarkIndex));
                     continue;
@@ -66,7 +65,7 @@ public class YuanTheGoBiker {
                         }
 
                         Task todo = new Todo(instruction, false);
-                        taskList.add(todo);
+                        taskList.addTask(todo);
                         storage.save(taskList);
                         ui.showAdded(todo, taskList.size());
 
@@ -78,7 +77,7 @@ public class YuanTheGoBiker {
                             String deadlineDescription = rest[0];
                             LocalDate by = LocalDate.parse(rest[1], formatter);
                             Task deadline = new Deadline(deadlineDescription, by, false);
-                            taskList.add(deadline);
+                            taskList.addTask(deadline);
                             storage.save(taskList);
                             ui.showAdded(deadline, taskList.size());
 
@@ -96,7 +95,7 @@ public class YuanTheGoBiker {
                             LocalDate from = LocalDate.parse(toParts[0], formatter);
                             LocalDate to = LocalDate.parse(toParts[1], formatter);
                             Task event = new Event(eventDescription, from, to, false);
-                            taskList.add(event);
+                            taskList.addTask(event);
                             storage.save(taskList);
                             ui.showAdded(event, taskList.size());
 
@@ -119,7 +118,7 @@ public class YuanTheGoBiker {
                             throw new YuanException("Dude, there isn't a task with that number!");
                         }
 
-                        Task removedTask = taskList.remove(deleteIndex);
+                        Task removedTask = taskList.removeTask(deleteIndex);
                         storage.save(taskList);
                         ui.showRemoved(removedTask, taskList.size());
 

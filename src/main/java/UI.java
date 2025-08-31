@@ -43,7 +43,7 @@ public class UI {
         showLine();
     }
 
-    public void showTasks(ArrayList<Task> taskList) {
+    public void showTasks(TaskList taskList) {
         showLine();
         for (int i = 0; i < taskList.size(); i++) {
             showMessage((i + 1) + ". " + taskList.get(i));
