@@ -1,53 +1,33 @@
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class YuanTheGoBiker {
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-    static Storage storage = new Storage("./data/yuan.txt");
-    static ArrayList<Task> taskList = storage.load();
-
-    public static void line() {
-        System.out.println("    ____________________________________________");
-    }
-
-    public static void printMessage(String msg) {
-        System.out.println("    " + msg);
-    }
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+    private static final Storage storage = new Storage("./data/yuan.txt");
+    private static final ArrayList<Task> taskList = storage.load();
+    private static final UI ui = new UI();
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        ui.showWelcome();
 
-        line();
-        printMessage("Hello... I'm Yuan");
-        printMessage("Why are you bothering me");
-        line();
-
-        String input = "";
+        String input;
 
         while (true) {
             try {
-                input = scanner.nextLine();
+                input = ui.readCommand();
                 String[] parts = input.split(" ", 2);
                 String command = parts[0];
                 String instruction = parts.length > 1 ? parts[1] : "";
 
                 if (input.equals("bye")) {
-                    line();
-                    printMessage("Bye. I don't wanna see you again");
-                    line();
+                    ui.showBye();
                     break;
                 }
 
                 if (input.equals("list")) {
-                    line();
-                    for (int j = 0; j < taskList.size(); j++) {
-                        printMessage((j + 1) + "." + taskList.get(j).toString());
-                    }
-                    line();
+                    ui.showTasks(taskList);
                     continue;
                 }
 
@@ -61,11 +41,9 @@ public class YuanTheGoBiker {
 
                     taskList.get(markIndex).markAsDone();
                     storage.save(taskList);
-                    line();
-                    printMessage("Okay! I've mark this task as done:");
-                    printMessage(taskList.get(markIndex).toString());
-                    line();
+                    ui.showMark(taskList.get(markIndex));
                     continue;
+
                 } else if (command.equals("unmark")) {
                     int unmarkIndex = Integer.parseInt(instruction) - 1;
 
@@ -76,10 +54,7 @@ public class YuanTheGoBiker {
 
                     taskList.get(unmarkIndex).markAsNotDone();
                     storage.save(taskList);
-                    line();
-                    printMessage("Okay! I've mark this task as not done:");
-                    printMessage(taskList.get(unmarkIndex).toString());
-                    line();
+                    ui.showUnmark(taskList.get(unmarkIndex));
                     continue;
                 }
 
@@ -89,14 +64,11 @@ public class YuanTheGoBiker {
                         if (instruction.isEmpty()) {
                             throw new YuanException("Yo, I don't know what you mean, why is it empty??");
                         }
-                        taskList.add(new Todo(instruction, false));
-                        storage.save(taskList);
 
-                        line();
-                        printMessage("Alright, I've added this task:");
-                        printMessage(taskList.get(taskList.size() - 1).toString());
-                        printMessage("Now you have " + taskList.size() + " tasks in the list");
-                        line();
+                        Task todo = new Todo(instruction, false);
+                        taskList.add(todo);
+                        storage.save(taskList);
+                        ui.showAdded(todo, taskList.size());
 
                         break;
 
@@ -105,16 +77,13 @@ public class YuanTheGoBiker {
                             String[] rest = instruction.split(" /by ", 2);
                             String deadlineDescription = rest[0];
                             LocalDate by = LocalDate.parse(rest[1], formatter);
-                            taskList.add(new Deadline(deadlineDescription, by, false));
+                            Task deadline = new Deadline(deadlineDescription, by, false);
+                            taskList.add(deadline);
                             storage.save(taskList);
+                            ui.showAdded(deadline, taskList.size());
 
-                            line();
-                            printMessage("Alright, I've added this task:");
-                            printMessage(taskList.get(taskList.size() - 1).toString());
-                            printMessage("Now you have " + taskList.size() + " tasks in the list");
-                            line();
                         } catch (DateTimeParseException e) {
-                            printMessage("Don't make me say again, pls enter the date in dd/MM/yyyy format");
+                            ui.showError("Don't make me say again, pls enter the date in dd/MM/yyyy format");
                         }
 
                         break;
@@ -126,16 +95,13 @@ public class YuanTheGoBiker {
                             String[] toParts = fromParts[1].split(" /to ", 2);
                             LocalDate from = LocalDate.parse(toParts[0], formatter);
                             LocalDate to = LocalDate.parse(toParts[1], formatter);
-                            taskList.add(new Event(eventDescription, from, to, false));
+                            Task event = new Event(eventDescription, from, to, false);
+                            taskList.add(event);
                             storage.save(taskList);
+                            ui.showAdded(event, taskList.size());
 
-                            line();
-                            printMessage("Alright, I've added this task:");
-                            printMessage(taskList.get(taskList.size() - 1).toString());
-                            printMessage("Now you have " + taskList.size() + " tasks in the list");
-                            line();
                         } catch (DateTimeParseException e) {
-                            printMessage("Don't make me say again, pls enter the date in dd/MM/yyyy format");
+                            ui.showError("Don't make me say again, pls enter the date in dd/MM/yyyy format");
                         }
 
                         break;
@@ -155,12 +121,7 @@ public class YuanTheGoBiker {
 
                         Task removedTask = taskList.remove(deleteIndex);
                         storage.save(taskList);
-
-                        line();
-                        printMessage("Fine... I've removed this task:");
-                        printMessage(removedTask.toString());
-                        printMessage("Now you have " + taskList.size() + " tasks in the list");
-                        line();
+                        ui.showRemoved(removedTask, taskList.size());
 
                         break;
 
@@ -168,9 +129,7 @@ public class YuanTheGoBiker {
                         throw new YuanException("Try again man, you are almost there");
                 }
             } catch (YuanException e) {
-                line();
-                printMessage(e.getMessage());
-                line();
+                ui.showError(e.getMessage());
             }
         }
     }
