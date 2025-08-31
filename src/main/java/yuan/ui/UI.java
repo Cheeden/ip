@@ -1,5 +1,9 @@
+package yuan.ui;
+
+import yuan.task.Task;
+import yuan.tasklist.TaskList;
+
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class UI {
     private final Scanner scanner = new Scanner(System.in);

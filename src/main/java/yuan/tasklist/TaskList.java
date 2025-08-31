@@ -1,3 +1,7 @@
+package yuan.tasklist;
+
+import yuan.task.Task;
+
 import java.util.ArrayList;
 
 public class TaskList {
@@ -7,7 +11,7 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
-//    public TaskList(ArrayList<Task> tasks) {
+//    public duke.tasklist.TaskList(ArrayList<duke.task.Task> tasks) {
 //        this.tasks = tasks;
 //    }
 
