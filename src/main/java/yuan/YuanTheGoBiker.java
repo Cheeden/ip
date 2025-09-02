@@ -13,6 +13,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+
+/**
+ * The main entry point of the chatbot application.
+ * Yuan is a task manager that allows users to add, list, mark
+ * unmark, remove tasks in the task manager
+ */
 public class YuanTheGoBiker {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
     private static final Storage storage = new Storage("./data/yuan.txt");

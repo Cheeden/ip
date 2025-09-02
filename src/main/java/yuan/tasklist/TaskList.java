@@ -4,6 +4,9 @@ import yuan.task.Task;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks. Provides method to add, remove, and get size of list
+ */
 public class TaskList {
     private final ArrayList<Task> tasks;
 

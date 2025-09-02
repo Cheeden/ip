@@ -2,6 +2,9 @@ package yuan.task;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a task, has a description and can be marked as done
+ */
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -14,7 +17,9 @@ public abstract class Task {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * Returns a string representation of the task done using X
+     */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }

@@ -10,6 +10,9 @@ import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Handles saving and loading of tasks from a local file
+ */
 public class Storage {
     private String filePath;
 
@@ -17,6 +20,9 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Load tasks from storage file
+     */
     public TaskList load() {
         TaskList taskList = new TaskList();
         File file = new File(filePath);
@@ -42,6 +48,9 @@ public class Storage {
         return taskList;
     }
 
+    /**
+     * Saves tasks in a storage file
+     */
     public void save(TaskList taskList) {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));

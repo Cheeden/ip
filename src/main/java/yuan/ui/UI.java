@@ -5,6 +5,9 @@ import yuan.tasklist.TaskList;
 
 import java.util.Scanner;
 
+/**
+ * Handles user interactions by displaying messages and reading input from the console.
+ */
 public class UI {
     private final Scanner scanner = new Scanner(System.in);
 
@@ -12,6 +15,9 @@ public class UI {
         System.out.println("    ____________________________________________");
     }
 
+    /**
+     * Displays welcome msg when program starts
+     */
     public void showWelcome() {
         showLine();
         showMessage("Hello... I'm Yuan");
