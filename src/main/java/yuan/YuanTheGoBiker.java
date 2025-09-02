@@ -85,7 +85,6 @@ public class YuanTheGoBiker {
                         taskList.addTask(todo);
                         storage.save(taskList);
                         ui.showAdded(todo, taskList.size());
-
                         break;
 
                     case "deadline":
@@ -101,7 +100,6 @@ public class YuanTheGoBiker {
                         } catch (DateTimeParseException e) {
                             ui.showError("Don't make me say again, pls enter the date in dd/MM/yyyy format");
                         }
-
                         break;
 
                     case "event":
@@ -119,7 +117,6 @@ public class YuanTheGoBiker {
                         } catch (DateTimeParseException e) {
                             ui.showError("Don't make me say again, pls enter the date in dd/MM/yyyy format");
                         }
-
                         break;
 
                     case "delete":
@@ -138,7 +135,6 @@ public class YuanTheGoBiker {
                         Task removedTask = taskList.removeTask(deleteIndex);
                         storage.save(taskList);
                         ui.showRemoved(removedTask, taskList.size());
-
                         break;
 
                     default:
