@@ -26,6 +26,16 @@ public class TaskList {
         tasks.add(task);
     }
 
+    public TaskList findTaskWithKeyword(String keyword) {
+        TaskList result = new TaskList();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(keyword)) {
+                result.addTask(task);
+            }
+        }
+        return result;
+    }
+
     public Task removeTask(int index) {
         return tasks.remove(index);
     }

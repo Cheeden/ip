@@ -47,6 +47,13 @@ public class YuanTheGoBiker {
                     continue;
                 }
 
+                if (command.equals("find")) {
+                    String keyword = instruction;
+                    TaskList found = taskList.findTaskWithKeyword(keyword);
+                    ui.showTasks(found);
+                    continue;
+                }
+
                 if (command.equals("mark")) {
                     int markIndex = Integer.parseInt(instruction) - 1;
 
