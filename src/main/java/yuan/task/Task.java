@@ -9,6 +9,12 @@ public abstract class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Constructor for Task
+     *
+     * @param description
+     * @param isDone
+     */
     public Task(String description, boolean isDone) {
         this.description = description;
         this.isDone = isDone;
@@ -17,6 +23,7 @@ public abstract class Task {
     public String getDescription() {
         return this.description;
     }
+
     /**
      * Returns a string representation of the task done using X
      */
@@ -38,6 +45,12 @@ public abstract class Task {
 
     public abstract String toStorageFormat();
 
+    /**
+     * Converts task from storage format to display format
+     *
+     * @param line
+     * @return
+     */
     public static Task fromStorageFormat(String line) {
         String[] parts = line.split(" \\| ");
         String type = parts[0];
@@ -45,20 +58,20 @@ public abstract class Task {
         String description = parts[2];
 
         switch (type) {
-            case "T":
-                return new Todo(description, isDone);
+        case "T":
+            return new Todo(description, isDone);
 
-            case "D":
-                LocalDate deadline = LocalDate.parse(parts[3]);
-                return new Deadline(description, deadline, isDone);
+        case "D":
+            LocalDate deadline = LocalDate.parse(parts[3]);
+            return new Deadline(description, deadline, isDone);
 
-            case "E":
-                LocalDate from = LocalDate.parse(parts[3]);
-                LocalDate to = LocalDate.parse(parts[4]);
-                return new Event(description, from, to, isDone);
+        case "E":
+            LocalDate from = LocalDate.parse(parts[3]);
+            LocalDate to = LocalDate.parse(parts[4]);
+            return new Event(description, from, to, isDone);
 
-            default:
-                throw new IllegalArgumentException("Wrong format in file: " + line);
+        default:
+            throw new IllegalArgumentException("Wrong format in file: " + line);
         }
     }
 }
