@@ -1,9 +1,9 @@
 package yuan.ui;
 
+import java.util.Scanner;
+
 import yuan.task.Task;
 import yuan.tasklist.TaskList;
-
-import java.util.Scanner;
 
 /**
  * Handles user interactions by displaying messages and reading input from the console.
@@ -33,6 +33,10 @@ public class UI {
         System.out.println("    " + msg);
     }
 
+    /**
+     * prints marked task in terminal
+     * @param task
+     */
     public void showMark(Task task) {
         showLine();
         showMessage("Fine... I've marked this task as done:");
@@ -40,6 +44,10 @@ public class UI {
         showLine();
     }
 
+    /**
+     * prints unmarked task in terminal
+     * @param task
+     */
     public void showUnmark(Task task) {
         showLine();
         showMessage("Fine... I've marked this task as not done:");
@@ -47,12 +55,20 @@ public class UI {
         showLine();
     }
 
+    /**
+     * shows error message
+     * @param msg
+     */
     public void showError(String msg) {
         showLine();
         showMessage(msg);
         showLine();
     }
 
+    /**
+     * prints all tasks in the list
+     * @param taskList
+     */
     public void showTasks(TaskList taskList) {
         showLine();
         for (int i = 0; i < taskList.size(); i++) {
@@ -61,6 +77,11 @@ public class UI {
         showLine();
     }
 
+    /**
+     * prints newly added task
+     * @param task
+     * @param newSize
+     */
     public void showAdded(Task task, int newSize) {
         showLine();
         showMessage("Alright, I've added this task:");
@@ -69,6 +90,11 @@ public class UI {
         showLine();
     }
 
+    /**
+     * prints removed task
+     * @param task
+     * @param newSize
+     */
     public void showRemoved(Task task, int newSize) {
         showLine();
         showMessage("Fine... I've removed this task:");
@@ -77,6 +103,9 @@ public class UI {
         showLine();
     }
 
+    /**
+     * prints bye message
+     */
     public void showBye() {
         showLine();
         showMessage("Bye. I don't wanna see you again");

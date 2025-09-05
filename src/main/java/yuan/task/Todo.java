@@ -1,5 +1,8 @@
 package yuan.task;
 
+/**
+ * Represents a task that contains a description
+ */
 public class Todo extends Task {
 
     public Todo(String description, boolean isDone) {

@@ -1,8 +1,8 @@
 package yuan.tasklist;
 
-import yuan.task.Task;
-
 import java.util.ArrayList;
+
+import yuan.task.Task;
 
 /**
  * Represents a list of tasks. Provides method to add, remove, and get size of list
@@ -14,9 +14,9 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
-//    public duke.tasklist.TaskList(ArrayList<duke.task.Task> tasks) {
-//        this.tasks = tasks;
-//    }
+    //public duke.tasklist.TaskList(ArrayList<duke.task.Task> tasks) {
+    //   this.tasks = tasks;
+    //}
 
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks);
@@ -26,6 +26,11 @@ public class TaskList {
         tasks.add(task);
     }
 
+    /**
+     * Finding a list of task with keyword
+     * @param keyword
+     * @return
+     */
     public TaskList findTaskWithKeyword(String keyword) {
         TaskList result = new TaskList();
         for (Task task : tasks) {
@@ -40,11 +45,19 @@ public class TaskList {
         return tasks.remove(index);
     }
 
+    /**
+     * Marks task as done
+     * @param index
+     */
     public void markTask(int index) {
         Task task = tasks.get(index);
         task.markAsDone();
     }
 
+    /**
+     * Marks task as not done
+     * @param index
+     */
     public void unmarkTask(int index) {
         Task task = tasks.get(index);
         task.markAsNotDone();
