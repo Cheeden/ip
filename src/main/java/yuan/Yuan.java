@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import javafx.application.Platform;
 import yuan.exception.YuanException;
 import yuan.storage.Storage;
 import yuan.task.Deadline;
@@ -19,12 +20,115 @@ import yuan.ui.UI;
  * Yuan is a task manager that allows users to add, list, mark
  * unmark, remove tasks in the task manager
  */
-public class YuanTheGoBiker {
+public class Yuan {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
     private static final Storage storage = new Storage("./data/yuan.txt");
     private static final TaskList taskList = storage.load();
     private static final UI ui = new UI();
 
+    /**
+     * Generates a response for the user's chat message for gui.
+     */
+    public String getResponse(String input) {
+        return executeCommand(input);
+    }
+
+    /**
+     * execute commands method for gui
+     * @param input
+     * @return
+     */
+    public String executeCommand(String input) {
+        try {
+            String[] parts = input.split(" ", 2);
+            String command = parts[0];
+            String instruction = parts.length > 1 ? parts[1] : "";
+
+            if (input.equals("bye")) {
+                Platform.exit();
+                return "Bye. I don't wanna see you again";
+            }
+
+            if (input.equals("list")) {
+                return ui.renderTasks(taskList);
+            }
+
+            if (command.equals("find")) {
+                TaskList found = taskList.findTaskWithKeyword(instruction);
+                return ui.renderTasks(found);
+            }
+
+            if (command.equals("mark")) {
+                int idx = Integer.parseInt(instruction) - 1;
+                if (idx < 0 || idx >= taskList.size()) {
+                    throw new YuanException("No task with that number!");
+                }
+                taskList.markTask(idx);
+                storage.save(taskList);
+                return ui.renderMark(taskList.get(idx));
+            }
+
+            if (command.equals("unmark")) {
+                int idx = Integer.parseInt(instruction) - 1;
+                if (idx < 0 || idx >= taskList.size()) {
+                    throw new YuanException("No task with that number!");
+                }
+                taskList.unmarkTask(idx);
+                storage.save(taskList);
+                return ui.renderUnmark(taskList.get(idx));
+            }
+
+            switch (command) {
+            case "todo":
+                if (instruction.isEmpty()) {
+                    throw new YuanException("Todo cannot be empty.");
+                }
+                Task todo = new Todo(instruction, false);
+                taskList.addTask(todo);
+                storage.save(taskList);
+                return ui.renderAdded(todo, taskList.size());
+
+            case "deadline":
+                String[] rest = instruction.split(" /by ", 2);
+                String desc = rest[0];
+                LocalDate by = LocalDate.parse(rest[1], formatter);
+                Task deadline = new Deadline(desc, by, false);
+                taskList.addTask(deadline);
+                storage.save(taskList);
+                return ui.renderAdded(deadline, taskList.size());
+
+            case "event":
+                String[] fromParts = instruction.split(" /from ", 2);
+                String descE = fromParts[0];
+                String[] toParts = fromParts[1].split(" /to ", 2);
+                LocalDate from = LocalDate.parse(toParts[0], formatter);
+                LocalDate to = LocalDate.parse(toParts[1], formatter);
+                Task event = new Event(descE, from, to, false);
+                taskList.addTask(event);
+                storage.save(taskList);
+                return ui.renderAdded(event, taskList.size());
+
+            case "delete":
+                int idxDel = Integer.parseInt(instruction) - 1;
+                if (idxDel < 0 || idxDel >= taskList.size()) {
+                    throw new YuanException("No task with that number!");
+                }
+                Task removed = taskList.removeTask(idxDel);
+                storage.save(taskList);
+                return ui.renderRemoved(removed, taskList.size());
+
+            default:
+                throw new YuanException("What are you saying??? Try again lil bro");
+            }
+        } catch (Exception e) {
+            return ui.renderError(e.getMessage());
+        }
+    }
+
+    /**
+     * main method for cli
+     * @param args
+     */
     public static void main(String[] args) {
         ui.showWelcome();
 
