@@ -103,6 +103,22 @@ public class UI {
         showLine();
     }
 
+    public void showHelp() {
+        showLine();
+        showMessage("Yuan Chatbot Help:\n"
+                + "- list : Show all tasks\n"
+                + "- todo <desc> : Add a todo task\n"
+                + "- deadline <desc> /by <d/M/yyyy> : Add a deadline\n"
+                + "- event <desc> /from <d/M/yyyy> /to <d/M/yyyy> : Add an event\n"
+                + "- mark <num> : Mark task as done\n"
+                + "- unmark <num> : Unmark task\n"
+                + "- delete <num> : Delete a task\n"
+                + "- find <keyword> : Search tasks\n"
+                + "- help : Show this help message\n"
+                + "- bye : Exit Yuan\n");
+        showLine();
+    }
+
     /**
      * prints bye message
      */
@@ -149,6 +165,24 @@ public class UI {
 
     public String renderUnmark(Task task) {
         return "Marked as not done: " + task;
+    }
+
+    /**
+     * method to give all commands available for chatbot
+     * @return
+     */
+    public String renderHelp() {
+        return "Yuan Chatbot Help:\n"
+                + "- list : Show all tasks\n"
+                + "- todo <desc> : Add a todo task\n"
+                + "- deadline <desc> /by <d/M/yyyy> : Add a deadline\n"
+                + "- event <desc> /from <d/M/yyyy> /to <d/M/yyyy> : Add an event\n"
+                + "- mark <num> : Mark task as done\n"
+                + "- unmark <num> : Unmark task\n"
+                + "- delete <num> : Delete a task\n"
+                + "- find <keyword> : Search tasks\n"
+                + "- help : Show this help message\n"
+                + "- bye : Exit Yuan\n";
     }
 
     public String renderError(String message) {

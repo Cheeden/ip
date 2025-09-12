@@ -53,6 +53,10 @@ public class Yuan {
                 return ui.renderTasks(taskList);
             }
 
+            if (command.equals("help")) {
+                return ui.renderHelp();
+            }
+
             if (command.equals("find")) {
                 TaskList found = taskList.findTaskWithKeyword(instruction);
                 return ui.renderTasks(found);
@@ -148,6 +152,11 @@ public class Yuan {
 
                 if (input.equals("list")) {
                     ui.showTasks(taskList);
+                    continue;
+                }
+
+                if (command.equals("help")) {
+                    ui.showMessage(ui.renderHelp());
                     continue;
                 }
 
