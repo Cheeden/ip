@@ -41,7 +41,13 @@ public class TaskList {
         return result;
     }
 
+    /**
+     * Removes task from tasklist
+     * @param index
+     * @return
+     */
     public Task removeTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds in removeTask";
         return tasks.remove(index);
     }
 
@@ -50,6 +56,7 @@ public class TaskList {
      * @param index
      */
     public void markTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds in markTask";
         Task task = tasks.get(index);
         task.markAsDone();
     }
@@ -59,6 +66,7 @@ public class TaskList {
      * @param index
      */
     public void unmarkTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds in unmarkTask";
         Task task = tasks.get(index);
         task.markAsNotDone();
     }
@@ -68,6 +76,7 @@ public class TaskList {
     }
 
     public Task get(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds in get";
         return tasks.get(index);
     }
 }
