@@ -71,7 +71,7 @@ public class UI {
      */
     public void showTasks(TaskList taskList) {
         showLine();
-        for (int i = 0; i < taskList.size(); i++) {
+        for (int i = 0; i < taskList.getSize(); i++) {
             showMessage((i + 1) + ". " + taskList.get(i));
         }
         showLine();
@@ -118,11 +118,11 @@ public class UI {
      * @return
      */
     public String renderTasks(TaskList tasks) {
-        if (tasks.size() == 0) {
+        if (tasks.getSize() == 0) {
             return "Wow, zero tasks. Impressive laziness.";
         }
         StringBuilder sb = new StringBuilder("Here are your useless tasks:\n");
-        for (int i = 0; i < tasks.size(); i++) {
+        for (int i = 0; i < tasks.getSize(); i++) {
             sb.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
         }
         return sb.toString();

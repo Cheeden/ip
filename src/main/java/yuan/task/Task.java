@@ -5,6 +5,7 @@ import java.time.LocalDate;
 /**
  * Represents a task, has a description and can be marked as done
  */
+@SuppressWarnings("checkstyle:Regexp")
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -39,6 +40,7 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    @Override
     public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }

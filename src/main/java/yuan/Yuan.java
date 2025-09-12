@@ -60,7 +60,7 @@ public class Yuan {
 
             if (command.equals("mark")) {
                 int idx = Integer.parseInt(instruction) - 1;
-                if (idx < 0 || idx >= taskList.size()) {
+                if (idx < 0 || idx >= taskList.getSize()) {
                     throw new YuanException("No task with that number!");
                 }
                 taskList.markTask(idx);
@@ -70,7 +70,7 @@ public class Yuan {
 
             if (command.equals("unmark")) {
                 int idx = Integer.parseInt(instruction) - 1;
-                if (idx < 0 || idx >= taskList.size()) {
+                if (idx < 0 || idx >= taskList.getSize()) {
                     throw new YuanException("No task with that number!");
                 }
                 taskList.unmarkTask(idx);
@@ -86,7 +86,7 @@ public class Yuan {
                 Task todo = new Todo(instruction, false);
                 taskList.addTask(todo);
                 storage.save(taskList);
-                return ui.renderAdded(todo, taskList.size());
+                return ui.renderAdded(todo, taskList.getSize());
 
             case "deadline":
                 String[] rest = instruction.split(" /by ", 2);
@@ -95,7 +95,7 @@ public class Yuan {
                 Task deadline = new Deadline(desc, by, false);
                 taskList.addTask(deadline);
                 storage.save(taskList);
-                return ui.renderAdded(deadline, taskList.size());
+                return ui.renderAdded(deadline, taskList.getSize());
 
             case "event":
                 String[] fromParts = instruction.split(" /from ", 2);
@@ -106,16 +106,16 @@ public class Yuan {
                 Task event = new Event(descE, from, to, false);
                 taskList.addTask(event);
                 storage.save(taskList);
-                return ui.renderAdded(event, taskList.size());
+                return ui.renderAdded(event, taskList.getSize());
 
             case "delete":
                 int idxDel = Integer.parseInt(instruction) - 1;
-                if (idxDel < 0 || idxDel >= taskList.size()) {
+                if (idxDel < 0 || idxDel >= taskList.getSize()) {
                     throw new YuanException("No task with that number!");
                 }
                 Task removed = taskList.removeTask(idxDel);
                 storage.save(taskList);
-                return ui.renderRemoved(removed, taskList.size());
+                return ui.renderRemoved(removed, taskList.getSize());
 
             default:
                 throw new YuanException("What are you saying??? Try again lil bro");
@@ -162,7 +162,7 @@ public class Yuan {
                     int markIndex = Integer.parseInt(instruction) - 1;
 
                     //error handling
-                    if (markIndex < 0 || markIndex >= taskList.size()) {
+                    if (markIndex < 0 || markIndex >= taskList.getSize()) {
                         throw new YuanException("Dude, there there isn't a task with that number!");
                     }
 
@@ -175,7 +175,7 @@ public class Yuan {
                     int unmarkIndex = Integer.parseInt(instruction) - 1;
 
                     //error handling
-                    if (unmarkIndex < 0 || unmarkIndex >= taskList.size()) {
+                    if (unmarkIndex < 0 || unmarkIndex >= taskList.getSize()) {
                         throw new YuanException("Dude, there there isn't a task with that number!");
                     }
 
@@ -195,7 +195,7 @@ public class Yuan {
                     Task todo = new Todo(instruction, false);
                     taskList.addTask(todo);
                     storage.save(taskList);
-                    ui.showAdded(todo, taskList.size());
+                    ui.showAdded(todo, taskList.getSize());
                     break;
 
                 case "deadline":
@@ -206,7 +206,7 @@ public class Yuan {
                         Task deadline = new Deadline(deadlineDescription, by, false);
                         taskList.addTask(deadline);
                         storage.save(taskList);
-                        ui.showAdded(deadline, taskList.size());
+                        ui.showAdded(deadline, taskList.getSize());
 
                     } catch (DateTimeParseException e) {
                         ui.showError("Don't make me say again, pls enter the date in dd/MM/yyyy format");
@@ -223,7 +223,7 @@ public class Yuan {
                         Task event = new Event(eventDescription, from, to, false);
                         taskList.addTask(event);
                         storage.save(taskList);
-                        ui.showAdded(event, taskList.size());
+                        ui.showAdded(event, taskList.getSize());
 
                     } catch (DateTimeParseException e) {
                         ui.showError("Don't make me say again, pls enter the date in dd/MM/yyyy format");
@@ -239,13 +239,13 @@ public class Yuan {
                     int deleteIndex = Integer.parseInt(instruction) - 1;
 
                     //error handling
-                    if (deleteIndex < 0 || deleteIndex >= taskList.size()) {
+                    if (deleteIndex < 0 || deleteIndex >= taskList.getSize()) {
                         throw new YuanException("Dude, there isn't a task with that number!");
                     }
 
                     Task removedTask = taskList.removeTask(deleteIndex);
                     storage.save(taskList);
-                    ui.showRemoved(removedTask, taskList.size());
+                    ui.showRemoved(removedTask, taskList.getSize());
                     break;
 
                 default:
