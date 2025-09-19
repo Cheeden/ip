@@ -3,7 +3,9 @@ package yuan.task;
 import java.time.LocalDate;
 
 /**
- * Represents a task, has a description and can be marked as done
+ * Abstract base class representing a task with a description and completion status.
+ *
+ * <p>AI-Assisted: JavaDoc suggested by ChatGPT and refined manually.</p>
  */
 @SuppressWarnings("checkstyle:Regexp")
 public abstract class Task {
@@ -11,7 +13,7 @@ public abstract class Task {
     protected boolean isDone;
 
     /**
-     * Constructor for Task
+     * Constructs a Task with the given description and status.
      *
      * @param description
      * @param isDone
@@ -45,10 +47,15 @@ public abstract class Task {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }
 
+    /**
+     * Converts the task into a storage-friendly format.
+     *
+     * @return storage string representation
+     */
     public abstract String toStorageFormat();
 
     /**
-     * Converts task from storage format to display format
+     * Reconstructs a Task object from its storage format string.
      *
      * @param line
      * @return

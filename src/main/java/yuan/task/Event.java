@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Event task that accepts a start and end date
+ * Represents a task scheduled between a start and an end date.
+ *
+ * <p>AI-Assisted: JavaDoc suggested by ChatGPT and refined manually.</p>
  */
 public class Event extends Task {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy");
@@ -12,7 +14,8 @@ public class Event extends Task {
     private LocalDate endTime;
 
     /**
-     * Constructor for event task
+     * Creates an Event task with the given description, start time, end time, and status.
+     *
      * @param description
      * @param start
      * @param end
@@ -30,6 +33,11 @@ public class Event extends Task {
                 + " (from: " + startTime.format(FORMATTER) + " to: " + endTime.format(FORMATTER) + ")";
     }
 
+    /**
+     * Converts the event task into a storage-friendly format.
+     *
+     * @return storage string representation
+     */
     @Override
     public String toStorageFormat() {
         return "E | " + (isDone ? 1 : 0) + " | " + description + " | " + startTime + " | " + endTime;

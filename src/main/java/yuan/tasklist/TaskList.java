@@ -14,10 +14,6 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
-    //public duke.tasklist.TaskList(ArrayList<duke.task.Task> tasks) {
-    //   this.tasks = tasks;
-    //}
-
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks);
     }
@@ -27,7 +23,8 @@ public class TaskList {
     }
 
     /**
-     * Finding a list of task with keyword
+     * Finds tasks in the list whose descriptions contain the given keyword.
+     *
      * @param keyword
      * @return
      */
@@ -42,7 +39,7 @@ public class TaskList {
     }
 
     /**
-     * Removes task from tasklist
+     * Removes task at specified index
      * @param index
      * @return
      */
@@ -75,6 +72,13 @@ public class TaskList {
         return tasks.size();
     }
 
+    /**
+     * Retrieves the task at the specified index.
+     *
+     * @param index the position of the task to retrieve (0-based)
+     * @return the task at the specified index
+     * @throws AssertionError if the index is out of bounds
+     */
     public Task get(int index) {
         assert index >= 0 && index < tasks.size() : "Index out of bounds in get";
         return tasks.get(index);

@@ -11,11 +11,18 @@ import yuan.task.Task;
 import yuan.tasklist.TaskList;
 
 /**
- * Handles saving and loading of tasks from a local file
+ * Handles saving and loading of tasks from a local file.
+ *
+ * <p>AI-Assisted: JavaDoc suggested by ChatGPT and refined manually.</p>
  */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object with the given file path.
+     *
+     * @param filePath the path of the file used for saving/loading tasks
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
